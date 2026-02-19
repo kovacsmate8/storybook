@@ -1,613 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Terminal.Glass — Component Showcase</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TERMINAL.GLASS — Kitchen Sink</title>
+
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --green: #00ff88; --cyan: #00d4ff; --red: #ff3366; --warn: #ffaa00;
-    --bg: #050a0e; --bg-card: #0a1520; --bg-glass: rgba(10,21,32,0.8);
-    --border: rgba(0,255,136,0.15); --border-hover: rgba(0,255,136,0.4);
-    --text: #c8e6d0; --dim: #4a7a5a;
-    --font: 'JetBrains Mono', monospace; --display: 'Space Mono', monospace;
+:root {
+  --void: #000000;
+  --surface: #0A0A0A;
+  --text: #FFFFFF;
+  --neon: #00FF88;
+  --danger: #FF0055;
+
+  --glass-layer: rgba(255,255,255,0.03);
+  --glass-border: rgba(0,255,136,0.2);
+
+  --transition: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  padding: 48px;
+}
+
+.grid {
+  display: grid;
+  gap: 24px;
+}
+
+.bento {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.glass {
+  position: relative;
+  background: var(--glass-layer);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px) saturate(180%);
+  border-radius: 8px;
+  padding: 24px;
+  transition: all 0.3s var(--transition);
+}
+
+.glass:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 20px rgba(0,255,136,0.4);
+}
+
+.corner-top {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 16px;
+  height: 16px;
+  border-top: 1px solid var(--neon);
+  border-left: 1px solid var(--neon);
+}
+
+.corner-bottom {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  border-bottom: 1px solid var(--neon);
+  border-right: 1px solid var(--neon);
+}
+
+.display {
+  font-size: 48px;
+}
+
+.heading {
+  font-size: 24px;
+}
+
+.body {
+  font-size: 16px;
+}
+
+.small {
+  font-size: 12px;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.badge.online {
+  background: var(--neon);
+  color: #000;
+  box-shadow: 0 0 10px rgba(0,255,136,0.8);
+}
+
+.badge.danger {
+  background: var(--danger);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255,0,85,0.8);
+}
+
+.terminal {
+  height: 240px;
+  overflow-y: auto;
+}
+
+.terminal-input {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  outline: none;
+  font-family: inherit;
+  width: 100%;
+}
+
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background: var(--neon);
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.scan {
+  animation: scanIn 0.6s var(--transition) forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes scanIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px; line-height: 1.6; }
+}
 
-  /* Layout */
-  .layout { display: flex; min-height: 100vh; }
-  .sidebar { width: 220px; min-height: 100vh; background: var(--bg-card); border-right: 1px solid var(--border); padding: 24px 0; position: sticky; top: 0; flex-shrink: 0; }
-  .main { flex: 1; padding: 48px; max-width: 900px; }
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(20px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
 
-  /* Sidebar */
-  .logo { padding: 0 20px 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
-  .logo-mark { font-family: var(--display); font-size: 14px; color: var(--green); letter-spacing: 0.08em; }
-  .logo-sub { font-size: 9px; color: var(--dim); letter-spacing: 0.2em; margin-top: 4px; }
-  .nav-item { display: block; padding: 8px 20px; font-size: 11px; color: var(--dim); letter-spacing: 0.1em; cursor: pointer; border-left: 2px solid transparent; transition: all 0.15s; text-decoration: none; }
-  .nav-item:hover { color: var(--text); background: rgba(0,255,136,0.04); }
-  .nav-item.active { color: var(--green); border-left-color: var(--green); background: rgba(0,255,136,0.06); }
-  .nav-section { font-size: 9px; color: var(--dim); letter-spacing: 0.2em; padding: 16px 20px 6px; }
+.modal {
+  width: 600px;
+  background: var(--surface);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 24px;
+}
 
-  /* Sections */
-  .section { display: none; }
-  .section.active { display: block; }
-  .section-title { font-family: var(--display); font-size: 20px; color: var(--text); margin-bottom: 6px; }
-  .section-sub { font-size: 11px; color: var(--dim); margin-bottom: 40px; }
-  .group { margin-bottom: 48px; }
-  .group-title { font-size: 9px; color: var(--dim); letter-spacing: 0.24em; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  .col { display: flex; flex-direction: column; gap: 12px; }
-
-  /* ── BUTTON ── */
-  .btn { display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer; font-family: var(--font); text-transform: uppercase; letter-spacing: 0.14em; border-radius: 3px; transition: all 0.15s; position: relative; }
-  .btn-sm { padding: 6px 14px; font-size: 11px; }
-  .btn-md { padding: 10px 22px; font-size: 12px; }
-  .btn-lg { padding: 14px 32px; font-size: 13px; }
-  .btn-solid { background: rgba(0,255,136,0.1); border: 1px solid var(--green); color: var(--green); }
-  .btn-solid:hover { background: rgba(0,255,136,0.18); box-shadow: 0 0 20px rgba(0,255,136,0.2); }
-  .btn-outline { background: transparent; border: 1px solid rgba(0,255,136,0.35); color: var(--text); }
-  .btn-outline:hover { border-color: var(--green); color: var(--green); }
-  .btn-ghost { background: transparent; border: 1px solid transparent; color: var(--dim); }
-  .btn-ghost:hover { color: var(--text); background: rgba(0,255,136,0.04); }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn-danger { background: rgba(255,51,102,0.08); border: 1px solid var(--red); color: var(--red); }
-
-  /* ── BADGE ── */
-  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 2px; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; }
-  .badge-green  { background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.25); color: var(--green); }
-  .badge-cyan   { background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.25); color: var(--cyan); }
-  .badge-red    { background: rgba(255,51,102,0.08); border: 1px solid rgba(255,51,102,0.25); color: var(--red); }
-  .badge-warn   { background: rgba(255,170,0,0.08);  border: 1px solid rgba(255,170,0,0.25);  color: var(--warn); }
-  .badge-ghost  { background: transparent; border: 1px solid var(--border); color: var(--dim); }
-  .pulse { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.5s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
-
-  /* ── CARD ── */
-  .card { background: var(--bg-glass); border: 1px solid var(--border); border-radius: 4px; padding: 24px; backdrop-filter: blur(12px); position: relative; }
-  .card::before { content:''; position:absolute; top:0; right:0; width:8px; height:8px; border-top:1px solid var(--green); border-right:1px solid var(--green); }
-  .card::after  { content:''; position:absolute; bottom:0; left:0; width:8px; height:8px; border-bottom:1px solid var(--green); border-left:1px solid var(--green); }
-  .card-cyber { border-color: rgba(0,212,255,0.25); }
-  .card-cyber::before, .card-cyber::after { border-color: var(--cyan); }
-  .card-title { font-family: var(--display); font-size: 13px; color: var(--text); margin-bottom: 8px; }
-  .card-body { font-size: 11px; color: var(--dim); line-height: 1.7; }
-  .cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-
-  /* ── INPUT ── */
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  .field-label { font-size: 9px; color: var(--green); letter-spacing: 0.2em; text-transform: uppercase; }
-  .field-input { background: rgba(10,21,32,0.9); border: 1px solid var(--border); border-radius: 3px; padding: 10px 14px; color: var(--text); font-family: var(--font); font-size: 12px; outline: none; transition: all 0.15s; width: 100%; }
-  .field-input:focus { border-color: var(--green); box-shadow: 0 0 12px rgba(0,255,136,0.12); }
-  .field-input.error { border-color: var(--red); }
-  .field-hint { font-size: 10px; color: var(--dim); }
-  .field-error { font-size: 10px; color: var(--red); }
-
-  /* ── TABS ── */
-  .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 24px; gap: 0; }
-  .tab { padding: 10px 20px; font-size: 11px; letter-spacing: 0.1em; color: var(--dim); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
-  .tab:hover { color: var(--text); }
-  .tab.active { color: var(--green); border-bottom-color: var(--green); }
-  .tab-pill-row { display: flex; gap: 6px; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 4px; width: fit-content; }
-  .tab-pill { padding: 6px 16px; font-size: 11px; letter-spacing: 0.08em; color: var(--dim); cursor: pointer; border-radius: 3px; transition: all 0.15s; }
-  .tab-pill.active { background: rgba(0,255,136,0.12); color: var(--green); }
-
-  /* ── MODAL ── */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(5,10,14,0.85); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: 5px; padding: 32px; width: 480px; max-width: 90vw; position: relative; transform: scale(0.96); transition: transform 0.2s; }
-  .modal-overlay.open .modal { transform: scale(1); }
-  .modal::before { content:''; position:absolute; top:0; right:0; width:10px; height:10px; border-top:1px solid var(--green); border-right:1px solid var(--green); }
-  .modal-title { font-family: var(--display); font-size: 16px; color: var(--text); margin-bottom: 12px; }
-  .modal-body { font-size: 12px; color: var(--dim); line-height: 1.7; margin-bottom: 24px; }
-  .modal-footer { display: flex; gap: 10px; justify-content: flex-end; }
-  .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--dim); cursor: pointer; font-size: 18px; line-height: 1; }
-  .modal-close:hover { color: var(--text); }
-
-  /* ── TOAST ── */
-  .toast-area { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 200; }
-  .toast { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; background: var(--bg-card); border-radius: 4px; min-width: 280px; max-width: 360px; transform: translateX(120%); transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
-  .toast.show { transform: translateX(0); }
-  .toast-success { border: 1px solid rgba(0,255,136,0.3); border-left: 3px solid var(--green); }
-  .toast-error   { border: 1px solid rgba(255,51,102,0.3); border-left: 3px solid var(--red); }
-  .toast-info    { border: 1px solid rgba(0,212,255,0.3); border-left: 3px solid var(--cyan); }
-  .toast-warn    { border: 1px solid rgba(255,170,0,0.3); border-left: 3px solid var(--warn); }
-  .toast-icon { font-size: 14px; margin-top: 1px; }
-  .toast-title { font-size: 12px; color: var(--text); margin-bottom: 2px; }
-  .toast-msg { font-size: 10px; color: var(--dim); }
-
-  /* ── SKELETON ── */
-  .skel { background: linear-gradient(90deg, rgba(0,255,136,0.04) 25%, rgba(0,255,136,0.09) 50%, rgba(0,255,136,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 2px; }
-  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-  .skel-line { height: 12px; margin-bottom: 10px; }
-  .skel-line.w-3 { width: 30%; }
-  .skel-line.w-6 { width: 60%; }
-  .skel-line.w-full { width: 100%; }
-  .skel-circle { width: 40px; height: 40px; border-radius: 50%; }
-  .skel-card { padding: 20px; border: 1px solid var(--border); border-radius: 4px; }
-
-  /* ── TABLE ── */
-  .tbl { width: 100%; border-collapse: collapse; }
-  .tbl th { font-size: 9px; letter-spacing: 0.2em; color: var(--dim); text-transform: uppercase; padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border); background: rgba(0,255,136,0.03); }
-  .tbl td { padding: 12px 16px; font-size: 11px; color: var(--text); border-bottom: 1px solid rgba(0,255,136,0.06); }
-  .tbl tr:hover td { background: rgba(0,255,136,0.03); }
-
-  /* ── TOOLTIP ── */
-  .tip-wrap { position: relative; display: inline-block; }
-  .tip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: var(--bg-card); border: 1px solid var(--border); border-radius: 3px; padding: 6px 10px; font-size: 10px; color: var(--text); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s; z-index: 10; }
-  .tip::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:4px solid transparent; border-top-color: var(--border); }
-  .tip-wrap:hover .tip { opacity: 1; }
-
-  /* ── BREADCRUMB ── */
-  .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 11px; }
-  .bc-item { color: var(--dim); }
-  .bc-item.active { color: var(--text); }
-  .bc-sep { color: var(--dim); opacity: 0.4; }
-  .bc-item a { color: var(--dim); text-decoration: none; }
-  .bc-item a:hover { color: var(--cyan); }
-
-  /* ── DESIGN TOKENS ── */
-  .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
-  .token-swatch { border-radius: 3px; overflow: hidden; border: 1px solid var(--border); }
-  .token-color { height: 48px; }
-  .token-info { padding: 8px; background: var(--bg-card); }
-  .token-name { font-size: 9px; color: var(--dim); letter-spacing: 0.1em; }
-  .token-val  { font-size: 10px; color: var(--text); margin-top: 2px; }
-  .spacing-row { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
-  .spacing-bar { background: rgba(0,255,136,0.15); border: 1px solid rgba(0,255,136,0.2); border-radius: 2px; height: 20px; }
-  .spacing-label { font-size: 10px; color: var(--dim); width: 24px; }
-  .spacing-px { font-size: 10px; color: var(--text); }
-
-  /* ── DROPDOWN ── */
-  .dd-wrap { position: relative; display: inline-block; }
-  .dd-menu { position: absolute; top: calc(100% + 6px); left: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; min-width: 180px; padding: 4px; z-index: 50; opacity: 0; pointer-events: none; transition: opacity 0.15s; }
-  .dd-wrap.open .dd-menu { opacity: 1; pointer-events: all; }
-  .dd-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; font-size: 11px; color: var(--text); cursor: pointer; border-radius: 3px; }
-  .dd-item:hover { background: rgba(0,255,136,0.06); color: var(--green); }
-  .dd-item.danger { color: var(--red); }
-  .dd-item.danger:hover { background: rgba(255,51,102,0.06); }
-  .dd-sep { height: 1px; background: var(--border); margin: 4px 0; }
-
-  /* ── COMMAND PALETTE ── */
-  .cmd-overlay { position: fixed; inset: 0; background: rgba(5,10,14,0.9); backdrop-filter: blur(8px); display: flex; align-items: flex-start; justify-content: center; padding-top: 15vh; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
-  .cmd-overlay.open { opacity: 1; pointer-events: all; }
-  .cmd-box { background: var(--bg-card); border: 1px solid rgba(0,255,136,0.3); border-radius: 5px; width: 560px; max-width: 90vw; overflow: hidden; }
-  .cmd-input-wrap { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border); }
-  .cmd-icon { color: var(--green); font-size: 14px; }
-  .cmd-input { flex: 1; background: none; border: none; outline: none; font-family: var(--font); font-size: 14px; color: var(--text); }
-  .cmd-input::placeholder { color: var(--dim); }
-  .cmd-group-label { font-size: 9px; color: var(--dim); letter-spacing: 0.2em; padding: 12px 20px 6px; }
-  .cmd-item { display: flex; align-items: center; gap: 12px; padding: 10px 20px; cursor: pointer; }
-  .cmd-item:hover, .cmd-item.selected { background: rgba(0,255,136,0.06); }
-  .cmd-item-icon { width: 20px; text-align: center; color: var(--dim); }
-  .cmd-item-label { flex: 1; font-size: 12px; color: var(--text); }
-  .cmd-item-kbd { font-size: 10px; color: var(--dim); background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 2px; padding: 1px 5px; }
-  .cmd-footer { padding: 10px 20px; border-top: 1px solid var(--border); display: flex; gap: 16px; }
-  .cmd-hint { font-size: 9px; color: var(--dim); letter-spacing: 0.1em; }
-
-  kbd { display: inline-block; padding: 2px 7px; font-family: var(--font); font-size: 10px; color: var(--dim); background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 2px; }
+canvas {
+  width: 100%;
+  height: 300px;
+}
 </style>
 </head>
 <body>
 
-<div class="layout">
-  <!-- Sidebar -->
-  <nav class="sidebar">
-    <div class="logo">
-      <div class="logo-mark">▣ TERMINAL.GLASS</div>
-      <div class="logo-sub">COMPONENT SHOWCASE</div>
-    </div>
-    <div class="nav-section">// DESIGN</div>
-    <a class="nav-item active" onclick="show('tokens')">Design Tokens</a>
-    <div class="nav-section">// CORE</div>
-    <a class="nav-item" onclick="show('button')">Button</a>
-    <a class="nav-item" onclick="show('badge')">Badge</a>
-    <a class="nav-item" onclick="show('card')">GlassCard</a>
-    <div class="nav-section">// FORMS</div>
-    <a class="nav-item" onclick="show('input')">TerminalInput</a>
-    <div class="nav-section">// NAVIGATION</div>
-    <a class="nav-item" onclick="show('tabs')">Tabs</a>
-    <a class="nav-item" onclick="show('breadcrumb')">Breadcrumb</a>
-    <a class="nav-item" onclick="show('dropdown')">DropdownMenu</a>
-    <a class="nav-item" onclick="show('command')">CommandPalette</a>
-    <div class="nav-section">// FEEDBACK</div>
-    <a class="nav-item" onclick="show('toast')">Toast</a>
-    <a class="nav-item" onclick="show('tooltip')">Tooltip</a>
-    <a class="nav-item" onclick="show('skeleton')">Skeleton</a>
-    <a class="nav-item" onclick="show('table')">DataTable</a>
-    <a class="nav-item" onclick="show('modal')">Modal</a>
-  </nav>
+<div class="grid bento">
+  <div class="glass" style="grid-column: span 2; grid-row: span 2;">
+    <div class="corner-top"></div>
+    <div class="corner-bottom"></div>
+    <div class="display">TERMINAL.GLASS</div>
+    <div class="heading" style="color: var(--neon); margin-top: 16px;">Code is poetry.</div>
+  </div>
 
-  <!-- Main -->
-  <main class="main">
+  <div class="glass">
+    <div class="corner-top"></div>
+    <div class="corner-bottom"></div>
+    <span class="badge online">ONLINE</span>
+  </div>
 
-    <!-- TOKENS -->
-    <div id="tokens" class="section active">
-      <div class="section-title">Design Tokens</div>
-      <div class="section-sub">// The foundation — colors, spacing, typography</div>
-      <div class="group">
-        <div class="group-title">// BRAND COLORS</div>
-        <div class="token-grid">
-          <div class="token-swatch"><div class="token-color" style="background:#00ff88"></div><div class="token-info"><div class="token-name">GREEN</div><div class="token-val">#00ff88</div></div></div>
-          <div class="token-swatch"><div class="token-color" style="background:#00d4ff"></div><div class="token-info"><div class="token-name">CYAN</div><div class="token-val">#00d4ff</div></div></div>
-          <div class="token-swatch"><div class="token-color" style="background:#ff3366"></div><div class="token-info"><div class="token-name">RED</div><div class="token-val">#ff3366</div></div></div>
-          <div class="token-swatch"><div class="token-color" style="background:#ffaa00"></div><div class="token-info"><div class="token-name">WARNING</div><div class="token-val">#ffaa00</div></div></div>
-        </div>
-      </div>
-      <div class="group">
-        <div class="group-title">// SURFACES</div>
-        <div class="token-grid">
-          <div class="token-swatch"><div class="token-color" style="background:#050a0e;border-bottom:1px solid rgba(0,255,136,0.1)"></div><div class="token-info"><div class="token-name">BG</div><div class="token-val">#050a0e</div></div></div>
-          <div class="token-swatch"><div class="token-color" style="background:#0a1520;border-bottom:1px solid rgba(0,255,136,0.1)"></div><div class="token-info"><div class="token-name">BG CARD</div><div class="token-val">#0a1520</div></div></div>
-          <div class="token-swatch"><div class="token-color" style="background:#c8e6d0"></div><div class="token-info"><div class="token-name">TEXT</div><div class="token-val">#c8e6d0</div></div></div>
-          <div class="token-swatch"><div class="token-color" style="background:#4a7a5a"></div><div class="token-info"><div class="token-name">TEXT DIM</div><div class="token-val">#4a7a5a</div></div></div>
-        </div>
-      </div>
-      <div class="group">
-        <div class="group-title">// SPACING</div>
-        <div class="spacing-row"><span class="spacing-label">xs</span><div class="spacing-bar" style="width:4px"></div><span class="spacing-px">4px</span></div>
-        <div class="spacing-row"><span class="spacing-label">sm</span><div class="spacing-bar" style="width:8px"></div><span class="spacing-px">8px</span></div>
-        <div class="spacing-row"><span class="spacing-label">md</span><div class="spacing-bar" style="width:16px"></div><span class="spacing-px">16px</span></div>
-        <div class="spacing-row"><span class="spacing-label">lg</span><div class="spacing-bar" style="width:24px"></div><span class="spacing-px">24px</span></div>
-        <div class="spacing-row"><span class="spacing-label">xl</span><div class="spacing-bar" style="width:32px"></div><span class="spacing-px">32px</span></div>
-        <div class="spacing-row"><span class="spacing-label">xxl</span><div class="spacing-bar" style="width:48px"></div><span class="spacing-px">48px</span></div>
-      </div>
-    </div>
+  <div class="glass">
+    <div class="corner-top"></div>
+    <div class="corner-bottom"></div>
+    <span class="badge danger">CRITICAL</span>
+  </div>
 
-    <!-- BUTTON -->
-    <div id="button" class="section">
-      <div class="section-title">Button</div>
-      <div class="section-sub">// solid · outline · ghost — sm · md · lg</div>
-      <div class="group">
-        <div class="group-title">// VARIANTS</div>
-        <div class="row">
-          <button class="btn btn-md btn-solid">Solid</button>
-          <button class="btn btn-md btn-outline">Outline</button>
-          <button class="btn btn-md btn-ghost">Ghost</button>
-          <button class="btn btn-md btn-danger">Danger</button>
-        </div>
-      </div>
-      <div class="group">
-        <div class="group-title">// SIZES</div>
-        <div class="row">
-          <button class="btn btn-sm btn-solid">Small</button>
-          <button class="btn btn-md btn-solid">Medium</button>
-          <button class="btn btn-lg btn-solid">Large</button>
-        </div>
-      </div>
-      <div class="group">
-        <div class="group-title">// STATES</div>
-        <div class="row">
-          <button class="btn btn-md btn-solid" disabled>Disabled</button>
-          <button class="btn btn-md btn-solid">⟳ Loading…</button>
-          <button class="btn btn-md btn-outline">⌘ With Prefix</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- BADGE -->
-    <div id="badge" class="section">
-      <div class="section-title">Badge</div>
-      <div class="section-sub">// green · cyan · red · warning · ghost</div>
-      <div class="group">
-        <div class="group-title">// VARIANTS</div>
-        <div class="row">
-          <span class="badge badge-green">Online</span>
-          <span class="badge badge-cyan">Processing</span>
-          <span class="badge badge-red">Error</span>
-          <span class="badge badge-warn">Warning</span>
-          <span class="badge badge-ghost">Inactive</span>
-        </div>
-      </div>
-      <div class="group">
-        <div class="group-title">// WITH PULSE</div>
-        <div class="row">
-          <span class="badge badge-green"><span class="pulse"></span>Live</span>
-          <span class="badge badge-cyan"><span class="pulse"></span>Streaming</span>
-          <span class="badge badge-red"><span class="pulse"></span>Critical</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- CARD -->
-    <div id="card" class="section">
-      <div class="section-title">GlassCard</div>
-      <div class="section-sub">// glass morphism with corner accents</div>
-      <div class="group">
-        <div class="group-title">// VARIANTS</div>
-        <div class="cards-grid">
-          <div class="card"><div class="card-title">Default Card</div><div class="card-body">Glass morphism surface with green corner accents and subtle border.</div></div>
-          <div class="card card-cyber"><div class="card-title" style="color:var(--cyan)">Cyber Card</div><div class="card-body">Cyan variant for data and analytics contexts.</div></div>
-          <div class="card" style="background:transparent"><div class="card-title">Ghost Card</div><div class="card-body">Transparent background, border only.</div></div>
-          <div class="card" style="border-color:rgba(0,255,136,0.4);box-shadow:0 0 24px rgba(0,255,136,0.08)"><div class="card-title" style="color:var(--green)">Accent Card</div><div class="card-body">Highlighted with stronger border and glow.</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- INPUT -->
-    <div id="input" class="section">
-      <div class="section-title">TerminalInput</div>
-      <div class="section-sub">// styled form inputs with terminal aesthetic</div>
-      <div class="group" style="max-width:400px">
-        <div class="group-title">// VARIANTS</div>
-        <div class="col">
-          <div class="field"><label class="field-label">Default</label><input class="field-input" placeholder="Enter value…"></div>
-          <div class="field"><label class="field-label">With Hint</label><input class="field-input" placeholder="model-id or endpoint"><span class="field-hint">// Use the full model identifier</span></div>
-          <div class="field"><label class="field-label">Error State</label><input class="field-input error" value="invalid-value"><span class="field-error">⚠ Invalid model identifier</span></div>
-          <div class="field"><label class="field-label" style="color:var(--cyan)">Success</label><input class="field-input" style="border-color:var(--cyan)" value="gpt-4-turbo"></div>
-          <div class="field"><label class="field-label">Password</label><input class="field-input" type="password" value="secretkey"></div>
-          <div class="field"><label class="field-label" style="color:var(--dim)">Disabled</label><input class="field-input" disabled value="read-only value" style="opacity:0.4;cursor:not-allowed"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TABS -->
-    <div id="tabs" class="section">
-      <div class="section-title">Tabs</div>
-      <div class="section-sub">// line · pill variants</div>
-      <div class="group">
-        <div class="group-title">// LINE TABS</div>
-        <div class="tabs">
-          <div class="tab active" onclick="switchTab(this,'line')">Overview <span class="badge badge-green" style="padding:1px 6px;font-size:9px;margin-left:4px">3</span></div>
-          <div class="tab" onclick="switchTab(this,'line')">AI Runs <span class="badge badge-cyan" style="padding:1px 6px;font-size:9px;margin-left:4px">142</span></div>
-          <div class="tab" onclick="switchTab(this,'line')">Settings</div>
-          <div class="tab" style="opacity:0.3;cursor:not-allowed">Archived</div>
-        </div>
-        <div style="font-size:11px;color:var(--dim)">// Tab content area</div>
-      </div>
-      <div class="group">
-        <div class="group-title">// PILL TABS</div>
-        <div class="tab-pill-row">
-          <div class="tab-pill active" onclick="switchPill(this)">Grid</div>
-          <div class="tab-pill" onclick="switchPill(this)">List</div>
-          <div class="tab-pill" onclick="switchPill(this)">Compact</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- BREADCRUMB -->
-    <div id="breadcrumb" class="section">
-      <div class="section-title">Breadcrumb</div>
-      <div class="section-sub">// navigation path separators</div>
-      <div class="group">
-        <div class="group-title">// SLASH</div>
-        <div class="breadcrumb"><span class="bc-item"><a href="#">Home</a></span><span class="bc-sep">/</span><span class="bc-item"><a href="#">Projects</a></span><span class="bc-sep">/</span><span class="bc-item"><a href="#">AI App</a></span><span class="bc-sep">/</span><span class="bc-item active">Run #42</span></div>
-      </div>
-      <div class="group">
-        <div class="group-title">// ARROW</div>
-        <div class="breadcrumb"><span class="bc-item"><a href="#">Home</a></span><span class="bc-sep">›</span><span class="bc-item"><a href="#">Projects</a></span><span class="bc-sep">›</span><span class="bc-item active">AI App</span></div>
-      </div>
-      <div class="group">
-        <div class="group-title">// DOT</div>
-        <div class="breadcrumb"><span class="bc-item"><a href="#">Dashboard</a></span><span class="bc-sep">·</span><span class="bc-item"><a href="#">Settings</a></span><span class="bc-sep">·</span><span class="bc-item active">Billing</span></div>
-      </div>
-    </div>
-
-    <!-- DROPDOWN -->
-    <div id="dropdown" class="section">
-      <div class="section-title">DropdownMenu</div>
-      <div class="section-sub">// contextual action menus</div>
-      <div class="group">
-        <div class="group-title">// DEFAULT</div>
-        <div class="dd-wrap" id="dd1">
-          <button class="btn btn-md btn-outline" onclick="toggleDD('dd1')">Actions ▾</button>
-          <div class="dd-menu">
-            <div class="dd-item">✎ Edit</div>
-            <div class="dd-item">⧉ Duplicate</div>
-            <div class="dd-item">↑ Share</div>
-            <div class="dd-sep"></div>
-            <div class="dd-item danger">✕ Delete</div>
-          </div>
-        </div>
-      </div>
-      <div class="group">
-        <div class="group-title">// WITH SECTIONS</div>
-        <div class="dd-wrap" id="dd2">
-          <button class="btn btn-md btn-outline" onclick="toggleDD('dd2')">File ▾</button>
-          <div class="dd-menu">
-            <div class="dd-item">⊕ New file</div>
-            <div class="dd-item">⊞ New folder</div>
-            <div class="dd-sep"></div>
-            <div class="dd-item">↓ Download</div>
-            <div class="dd-item">↑ Upload</div>
-            <div class="dd-sep"></div>
-            <div class="dd-item danger">⊗ Delete all</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- COMMAND PALETTE -->
-    <div id="command" class="section">
-      <div class="section-title">CommandPalette</div>
-      <div class="section-sub">// ⌘K global search and navigation</div>
-      <div class="group">
-        <div class="group-title">// TRIGGER</div>
-        <div class="row">
-          <button class="btn btn-md btn-outline" onclick="openCmd()">Open CommandPalette <kbd>⌘K</kbd></button>
-        </div>
-        <div style="margin-top:16px;font-size:11px;color:var(--dim)">// Also press <kbd>⌘K</kbd> or <kbd>Ctrl+K</kbd> anywhere</div>
-      </div>
-    </div>
-
-    <!-- TOAST -->
-    <div id="toast" class="section">
-      <div class="section-title">Toast</div>
-      <div class="section-sub">// notification messages</div>
-      <div class="group">
-        <div class="group-title">// TRIGGER</div>
-        <div class="row">
-          <button class="btn btn-sm btn-solid" onclick="toast('success','Success','Operation completed.')">Success</button>
-          <button class="btn btn-sm btn-danger" onclick="toast('error','Error','Something went wrong.')">Error</button>
-          <button class="btn btn-sm btn-outline" onclick="toast('info','Info','Model updated to v3.')">Info</button>
-          <button class="btn btn-sm btn-outline" style="border-color:var(--warn);color:var(--warn)" onclick="toast('warn','Warning','Rate limit approaching.')">Warning</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- TOOLTIP -->
-    <div id="tooltip" class="section">
-      <div class="section-title">Tooltip</div>
-      <div class="section-sub">// hover for contextual info</div>
-      <div class="group">
-        <div class="group-title">// HOVER THESE</div>
-        <div class="row">
-          <div class="tip-wrap"><button class="btn btn-md btn-outline">Hover me</button><div class="tip">Tooltip content here</div></div>
-          <div class="tip-wrap"><span class="badge badge-green">Status <span class="pulse"></span></span><div class="tip">All systems operational</div></div>
-          <div class="tip-wrap"><button class="btn btn-md btn-solid">Deploy <kbd>⌘D</kbd></button><div class="tip">Deploy to production</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SKELETON -->
-    <div id="skeleton" class="section">
-      <div class="section-title">Skeleton</div>
-      <div class="section-sub">// loading state placeholders</div>
-      <div class="group">
-        <div class="group-title">// TEXT LINES</div>
-        <div class="skel-line w-3 skel"></div>
-        <div class="skel-line w-full skel"></div>
-        <div class="skel-line w-6 skel"></div>
-      </div>
-      <div class="group">
-        <div class="group-title">// CARD</div>
-        <div class="skel-card" style="max-width:320px">
-          <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px"><div class="skel skel-circle"></div><div style="flex:1"><div class="skel skel-line w-6" style="margin-bottom:6px"></div><div class="skel skel-line w-3"></div></div></div>
-          <div class="skel skel-line w-full"></div>
-          <div class="skel skel-line w-6"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TABLE -->
-    <div id="table" class="section">
-      <div class="section-title">DataTable</div>
-      <div class="section-sub">// sortable data display</div>
-      <div class="group">
-        <div class="group-title">// AI RUNS</div>
-        <div class="card" style="padding:0;overflow:hidden">
-          <table class="tbl">
-            <thead><tr><th>Run ID</th><th>Model</th><th>Tokens</th><th>Cost</th><th>Status</th></tr></thead>
-            <tbody>
-              <tr><td style="color:var(--cyan)">#run-001</td><td>gpt-4-turbo</td><td>4,821</td><td>$0.14</td><td><span class="badge badge-green">Done</span></td></tr>
-              <tr><td style="color:var(--cyan)">#run-002</td><td>claude-3-opus</td><td>2,104</td><td>$0.06</td><td><span class="badge badge-cyan"><span class="pulse"></span>Running</span></td></tr>
-              <tr><td style="color:var(--cyan)">#run-003</td><td>llama-3-70b</td><td>8,390</td><td>$0.02</td><td><span class="badge badge-red">Failed</span></td></tr>
-              <tr><td style="color:var(--cyan)">#run-004</td><td>mistral-large</td><td>1,256</td><td>$0.01</td><td><span class="badge badge-ghost">Queued</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- MODAL -->
-    <div id="modal" class="section">
-      <div class="section-title">Modal</div>
-      <div class="section-sub">// dialog overlays</div>
-      <div class="group">
-        <div class="group-title">// TRIGGER</div>
-        <div class="row">
-          <button class="btn btn-md btn-solid" onclick="openModal('m1')">Default Modal</button>
-          <button class="btn btn-md btn-danger" onclick="openModal('m2')">Danger Modal</button>
-        </div>
-      </div>
-    </div>
-
-  </main>
-</div>
-
-<!-- MODAL 1 -->
-<div class="modal-overlay" id="m1" onclick="closeModal('m1')">
-  <div class="modal" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeModal('m1')">×</button>
-    <div class="modal-title">Confirm deployment</div>
-    <div class="modal-body">This will deploy your changes to the production environment. This action cannot be undone. Are you sure you want to continue?</div>
-    <div class="modal-footer">
-      <button class="btn btn-sm btn-ghost" onclick="closeModal('m1')">Cancel</button>
-      <button class="btn btn-sm btn-solid" onclick="closeModal('m1')">Deploy →</button>
-    </div>
+  <div class="glass" style="grid-column: span 2;">
+    <div class="corner-top"></div>
+    <div class="corner-bottom"></div>
+    <div class="body">Architecture. Precision. Constraint.</div>
   </div>
 </div>
 
-<!-- MODAL 2 -->
-<div class="modal-overlay" id="m2" onclick="closeModal('m2')">
-  <div class="modal" style="border-color:rgba(255,51,102,0.3)" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeModal('m2')">×</button>
-    <div class="modal-title" style="color:var(--red)">Delete project</div>
-    <div class="modal-body">This will permanently delete <strong style="color:var(--text)">my-ai-app</strong> and all its data. This action cannot be undone.</div>
-    <div class="modal-footer">
-      <button class="btn btn-sm btn-ghost" onclick="closeModal('m2')">Cancel</button>
-      <button class="btn btn-sm btn-danger" onclick="closeModal('m2')">Delete forever</button>
-    </div>
-  </div>
+<br><br>
+
+<div class="glass">
+  <div class="corner-top"></div>
+  <div class="corner-bottom"></div>
+  <div class="heading">SYSTEM THROUGHPUT</div>
+  <canvas id="chart"></canvas>
 </div>
 
-<!-- COMMAND PALETTE -->
-<div class="cmd-overlay" id="cmdpal" onclick="closeCmd()">
-  <div class="cmd-box" onclick="event.stopPropagation()">
-    <div class="cmd-input-wrap">
-      <span class="cmd-icon">⌕</span>
-      <input class="cmd-input" placeholder="Search commands…" id="cmdInput">
-      <kbd>ESC</kbd>
-    </div>
-    <div class="cmd-group-label">// ACTIONS</div>
-    <div class="cmd-item selected"><span class="cmd-item-icon">⊕</span><span class="cmd-item-label">New project</span><kbd>⌘N</kbd></div>
-    <div class="cmd-item"><span class="cmd-item-icon">↑</span><span class="cmd-item-label">Deploy to production</span><kbd>⌘D</kbd></div>
-    <div class="cmd-item"><span class="cmd-item-icon">⟳</span><span class="cmd-item-label">Run all tests</span><kbd>⌘T</kbd></div>
-    <div class="cmd-group-label">// NAVIGATION</div>
-    <div class="cmd-item"><span class="cmd-item-icon">◈</span><span class="cmd-item-label">Go to Dashboard</span></div>
-    <div class="cmd-item"><span class="cmd-item-icon">⚙</span><span class="cmd-item-label">Open Settings</span></div>
-    <div class="cmd-footer">
-      <span class="cmd-hint">↑↓ navigate</span>
-      <span class="cmd-hint">↵ select</span>
-      <span class="cmd-hint">ESC close</span>
-    </div>
-  </div>
+<br><br>
+
+<div class="glass">
+  <div class="corner-top"></div>
+  <div class="corner-bottom"></div>
+  <div class="heading">NODE METRICS</div>
+  <div id="table"></div>
 </div>
 
-<!-- TOASTS -->
-<div class="toast-area" id="toastArea"></div>
+<br><br>
+
+<div class="glass terminal">
+  <div class="corner-top"></div>
+  <div class="corner-bottom"></div>
+  <div class="small" style="color: var(--neon); margin-bottom: 16px;">TERMINAL v1.0</div>
+  <div id="history"></div>
+  <form id="terminalForm">
+    <span style="color: var(--neon);">$</span>
+    <input class="terminal-input" id="terminalInput" autofocus />
+    <span class="cursor"></span>
+  </form>
+</div>
+
+<div class="modal-backdrop" id="commandPalette">
+  <div class="modal">
+    <input class="terminal-input body" placeholder="Type a command..." />
+  </div>
+</div>
 
 <script>
-  function show(id) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    event.target.classList.add('active');
+// Terminal
+const form = document.getElementById('terminalForm');
+const input = document.getElementById('terminalInput');
+const historyDiv = document.getElementById('history');
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  if (!input.value.trim()) return;
+
+  const line = document.createElement('div');
+  line.innerHTML = '<span style="color:#00FF88">$</span> ' + input.value;
+  historyDiv.appendChild(line);
+  input.value = '';
+});
+
+// Chart
+const canvas = document.getElementById('chart');
+const ctx = canvas.getContext('2d');
+canvas.width = canvas.offsetWidth;
+canvas.height = 300;
+
+ctx.strokeStyle = "#00FF88";
+ctx.lineWidth = 2;
+ctx.beginPath();
+
+for (let i = 0; i < 20; i++) {
+  const x = (canvas.width / 19) * i;
+  const y = 150 - Math.sin(i / 2) * 40 - i * 2;
+  if (i === 0) ctx.moveTo(x, y);
+  else ctx.lineTo(x, y);
+}
+ctx.stroke();
+
+// Table
+const table = document.getElementById('table');
+for (let i = 0; i < 5; i++) {
+  const row = document.createElement('div');
+  row.className = 'table-row scan';
+  row.style.animationDelay = `${i * 0.1}s`;
+  row.innerHTML = `<span>Node ${i}</span><span style="color:#00FF88">${(Math.random()*100).toFixed(2)}</span>`;
+  table.appendChild(row);
+}
+
+// Command Palette
+const palette = document.getElementById('commandPalette');
+
+window.addEventListener('keydown', e => {
+  if (e.metaKey && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    palette.style.display = palette.style.display === 'flex' ? 'none' : 'flex';
   }
-  function switchTab(el, group) {
-    el.closest('.tabs').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-  }
-  function switchPill(el) {
-    el.closest('.tab-pill-row').querySelectorAll('.tab-pill').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-  }
-  function openModal(id) { document.getElementById(id).classList.add('open'); }
-  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-  function toggleDD(id) {
-    document.querySelectorAll('.dd-wrap').forEach(d => { if(d.id!==id) d.classList.remove('open'); });
-    document.getElementById(id).classList.toggle('open');
-  }
-  function openCmd() { document.getElementById('cmdpal').classList.add('open'); document.getElementById('cmdInput').focus(); }
-  function closeCmd() { document.getElementById('cmdpal').classList.remove('open'); }
-  document.addEventListener('keydown', e => {
-    if ((e.metaKey||e.ctrlKey) && e.key==='k') { e.preventDefault(); openCmd(); }
-    if (e.key==='Escape') { closeCmd(); document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('open')); }
-  });
-  let toastId = 0;
-  function toast(type, title, msg) {
-    const area = document.getElementById('toastArea');
-    const el = document.createElement('div');
-    el.className = `toast toast-${type}`;
-    const icons = {success:'✓',error:'✕',info:'ℹ',warn:'⚠'};
-    el.innerHTML = `<span class="toast-icon">${icons[type]||'·'}</span><div><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`;
-    area.appendChild(el);
-    requestAnimationFrame(() => { requestAnimationFrame(() => el.classList.add('show')); });
-    setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
-  }
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.dd-wrap')) document.querySelectorAll('.dd-wrap').forEach(d => d.classList.remove('open'));
-  });
+});
 </script>
+
 </body>
 </html>
+
