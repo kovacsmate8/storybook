@@ -532,68 +532,6 @@
     max-width: 560px;
   }
 
-  /* INTERAKTÍV PRINCIPLE CARDS */
-  .about-principles {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--sp-3);
-    margin-top: var(--sp-5);
-  }
-
-  .principle-card {
-    border: 1px solid var(--border-base);
-    background: var(--surface-1);
-    backdrop-filter: blur(12px);
-    padding: var(--sp-4);
-    cursor: pointer;
-    transition: all 0.2s var(--ease-precision);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .principle-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(242,238,0,0.03), transparent);
-    transition: left 0.3s var(--ease-precision);
-  }
-
-  .principle-card:hover::before {
-    left: 100%;
-  }
-
-  .principle-card:hover {
-    border-color: var(--border-accent);
-    background: var(--surface-2);
-    transform: translateY(-2px);
-  }
-
-  .principle-number {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--accent-yellow);
-    margin-bottom: var(--sp-2);
-  }
-
-  .principle-title {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: var(--sp-1);
-  }
-
-  .principle-desc {
-    font-size: 12px;
-    line-height: 1.4;
-    color: var(--text-muted);
-  }
-
   /* META ITEMS — INTERAKTÍV */
   .about-meta {
     display: flex;
@@ -1113,7 +1051,6 @@
     .hero-right { display: none; }
 
     .about-grid { grid-template-columns: 1fr; }
-    .about-principles { grid-template-columns: 1fr; }
     .about-meta {
       flex-direction: column;
     }
@@ -1139,7 +1076,6 @@
     .card-lg, .card-sm, .card-md, .card-md2 {
       grid-column: span 1;
     }
-    .about-principles { grid-template-columns: 1fr; }
   }
 
   /* ═══════════════════════════════════════════════════════════
@@ -1222,7 +1158,7 @@
   </div>
 </section>
 
-<!-- ABOUT — INTERAKTÍV VERZIÓ -->
+<!-- ABOUT -->
 <section id="about">
   <div class="section-label">ABOUT</div>
   <div class="about-grid reveal">
@@ -1230,30 +1166,6 @@
       <h2>Nem navigációt építünk.<br>Hanem <em>útvonalat</em><br>a komplexitáson keresztül.</h2>
       <p>UI/UX tervezőként a munkám nem a felületek dekorálása. A munkám az, hogy a bonyolult rendszereket átláthatóvá, a döntéseket evidenssé tegyem — a design eszközével.</p>
       <p>Az egyszerűség nem hiány. Döntés. Minden elem, ami megmarad, az ott van, mert ott kell lennie. Ami felesleges, az nem létezik.</p>
-      
-      <!-- DESIGN PRINCIPLES GRID -->
-      <div class="about-principles">
-        <div class="principle-card">
-          <div class="principle-number">01</div>
-          <div class="principle-title">Clarity Over Decoration</div>
-          <div class="principle-desc">A vizuális nyelv nem dísz. Eszköz a kommunikációhoz.</div>
-        </div>
-        <div class="principle-card">
-          <div class="principle-number">02</div>
-          <div class="principle-title">Systems, Not Screens</div>
-          <div class="principle-desc">Nem oldalakat, hanem működő ökoszisztémákat építünk.</div>
-        </div>
-        <div class="principle-card">
-          <div class="principle-number">03</div>
-          <div class="principle-title">Precision is Standard</div>
-          <div class="principle-desc">Az 8px grid nem opció. Matematikai pontosság.</div>
-        </div>
-        <div class="principle-card">
-          <div class="principle-number">04</div>
-          <div class="principle-title">Speed = Strategy</div>
-          <div class="principle-desc">Minden milliszekundum döntési előny a felhasználónak.</div>
-        </div>
-      </div>
     </div>
 
     <!-- META ITEMS — INTERAKTÍV PROGRESS BARS -->
@@ -1582,7 +1494,7 @@
   animateRing();
 
   // Cursor hover effects
-  document.querySelectorAll('a, button, .project-card, .principle-card, .meta-item').forEach(el => {
+  document.querySelectorAll('a, button, .project-card, .meta-item').forEach(el => {
     el.addEventListener('mouseenter', () => {
       ring.style.width  = '56px';
       ring.style.height = '56px';
