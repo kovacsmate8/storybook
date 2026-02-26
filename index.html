@@ -70,6 +70,7 @@
     line-height: 1.5;
     overflow-x: hidden;
     position: relative;
+    padding-top: 56px;
   }
 
   /* ═══════════════════════════════════════════════════════════
@@ -158,7 +159,6 @@
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border-base);
     z-index: 1000;
-    /* Mobil gap fix */
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     will-change: transform;
@@ -267,11 +267,11 @@
      HERO
   ═══════════════════════════════════════════════════════════ */
   #hero {
-    min-height: 100vh;
+    min-height: calc(100vh - 56px);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-top: 56px;
+    padding-top: var(--sp-7);
   }
 
   .hero-grid {
@@ -1035,34 +1035,110 @@
   ═══════════════════════════════════════════════════════════ */
   @media (max-width: 768px) {
     section { padding: var(--sp-7) var(--sp-4); }
+    
     nav { 
       padding: 0 var(--sp-4);
       height: 56px;
-      /* Extra mobil stabilizáció */
       background: rgba(0,0,0,0.98);
     }
+    
     .nav-links { display: none; }
+    
     .nav-status {
       font-size: 9px;
       gap: var(--sp-1);
     }
 
-    .hero-grid { grid-template-columns: 1fr; }
-    .hero-right { display: none; }
-
-    .about-grid { grid-template-columns: 1fr; }
-    .about-meta {
-      flex-direction: column;
+    /* HERO MOBIL — PREMIUM VERZIÓ */
+    #hero {
+      min-height: auto;
+      padding-top: var(--sp-5);
+      padding-bottom: var(--sp-7);
     }
 
+    .hero-grid { 
+      grid-template-columns: 1fr;
+      gap: var(--sp-5);
+      align-items: start;
+    }
+    
+    .hero-right { 
+      display: flex;
+      width: 100%;
+    }
+
+    /* Statisztikák mobil méretezés */
+    .hero-right > div {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-2);
+      width: 100%;
+    }
+
+    .hero-stat-block {
+      padding: var(--sp-3);
+    }
+
+    .stat-number {
+      font-size: 28px;
+    }
+
+    .stat-label {
+      font-size: 9px;
+      letter-spacing: 0.1em;
+    }
+
+    /* Terminál kompakt mobil verzió */
+    .hero-terminal {
+      padding: var(--sp-3);
+      font-size: 10px;
+    }
+
+    .terminal-header {
+      margin-bottom: var(--sp-2);
+      padding-bottom: var(--sp-2);
+    }
+
+    .terminal-dot {
+      width: 6px;
+      height: 6px;
+    }
+
+    .terminal-title {
+      font-size: 9px;
+    }
+
+    .terminal-line {
+      line-height: 1.8;
+      font-size: 10px;
+    }
+
+    .terminal-line .output {
+      padding-left: var(--sp-2);
+    }
+
+    .cursor-blink {
+      width: 6px;
+      height: 12px;
+    }
+
+    /* About grid mobil */
+    .about-grid { grid-template-columns: 1fr; }
+    .about-meta { flex-direction: column; }
+
+    /* Bento grid mobil */
     .bento-grid { grid-template-columns: 1fr; }
     .card-lg, .card-sm, .card-md, .card-md2 {
       grid-column: span 1;
     }
 
+    /* Skills grid mobil */
     .skills-grid { grid-template-columns: 1fr; }
+    
+    /* Contact grid mobil */
     .contact-inner { grid-template-columns: 1fr; }
 
+    /* Footer mobil */
     footer {
       flex-direction: column;
       gap: var(--sp-2);
