@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ma.te</title>
+<title>MATE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -154,7 +154,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 var(--sp-7);
-    background: rgba(0,0,0,0.95);
+    background: #000;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border-base);
@@ -668,10 +668,10 @@
   }
 
   .project-card:hover {
-    border-color: var(--border-accent);
+    border-color: var(--accent-yellow);
     background: var(--surface-2);
     transform: translateY(-4px);
-    box-shadow: 0 8px 32px rgba(242,238,0,0.08), 0 0 24px rgba(242,238,0,0.12);
+    box-shadow: 0 8px 32px rgba(242,238,0,0.08), 0 0 24px rgba(242,238,0,0.12), 0 0 20px rgba(242,238,0,0.15);
   }
 
   /* Scanner Effect */
@@ -1039,7 +1039,7 @@
     nav { 
       padding: 0 var(--sp-4);
       height: 56px;
-      background: rgba(0,0,0,0.98);
+      background: #000;
     }
     
     .nav-links { display: none; }
@@ -1063,7 +1063,7 @@
     }
     
     .hero-right { 
-      display: flex;
+      display: flex !important;
       width: 100%;
     }
 
@@ -1080,7 +1080,7 @@
     }
 
     .stat-number {
-      font-size: 28px;
+      font-size: 32px;
     }
 
     .stat-label {
@@ -1222,13 +1222,12 @@
           <span class="terminal-dot td-cyan"></span>
           <span class="terminal-title">PROFILE.SH</span>
         </div>
-        <div class="terminal-line"><span class="prompt">$ </span><span class="cmd">whoami</span></div>
-        <div class="terminal-line output">→ UI/UX Designer. System thinker.</div>
-        <div class="terminal-line"><span class="prompt">$ </span><span class="cmd">cat philosophy.txt</span></div>
-        <div class="terminal-line output">→ Precision is not a demonstration.</div>
-        <div class="terminal-line output">→ It is a standard.</div>
-        <div class="terminal-line"><span class="prompt">$ </span><span class="cmd">status --current</span></div>
-        <div class="terminal-line output">→ Open to new projects. <span class="cursor-blink"></span></div>
+        <div class="terminal-line"><span class="prompt">$ </span><span class="cmd">workflow --init</span></div>
+        <div class="terminal-line output">→ Concept: Cosmos inspiration</div>
+        <div class="terminal-line output">→ Logic: Claude AI + v0.dev</div>
+        <div class="terminal-line output">→ Deploy: GitHub & Vercel</div>
+        <div class="terminal-line"><span class="prompt">$ </span><span class="cmd">status</span></div>
+        <div class="terminal-line output">→ System ready for collab. <span class="cursor-blink"></span></div>
       </div>
     </div>
   </div>
@@ -1248,21 +1247,21 @@
     <div class="about-meta">
       <div class="meta-item with-progress">
         <div class="meta-key">Location</div>
-        <div class="meta-val">Budapest, HU</div>
+        <div class="meta-val">Hungary</div>
         <div class="meta-progress">
           <div class="meta-progress-fill"></div>
         </div>
       </div>
       <div class="meta-item with-progress">
         <div class="meta-key">Focus</div>
-        <div class="meta-val">Digital Design</div>
+        <div class="meta-val">System Design</div>
         <div class="meta-progress">
           <div class="meta-progress-fill"></div>
         </div>
       </div>
       <div class="meta-item with-progress">
-        <div class="meta-key">Tools</div>
-        <div class="meta-val">Figma · Vercel</div>
+        <div class="meta-key">Stack</div>
+        <div class="meta-val">Figma · Github · Vercel</div>
         <div class="meta-progress">
           <div class="meta-progress-fill"></div>
         </div>
@@ -1282,7 +1281,7 @@
 <section id="projects">
   <div class="section-label">WORK</div>
   <div class="projects-header reveal">
-    <h2>Selected Projects</h2>
+    <h2>Featured Projects</h2>
     <span class="projects-count">06 CASE STUDIES</span>
   </div>
 
@@ -1440,7 +1439,7 @@
           <div class="skill-bar"><div class="skill-fill" data-level="0.80"></div></div>
         </div>
         <div class="skill-item">
-          <div class="skill-name"><span>GitHub</span><span class="skill-level">PROFICIENT</span></div>
+          <div class="skill-name"><span>Github</span><span class="skill-level">PROFICIENT</span></div>
           <div class="skill-bar"><div class="skill-fill" data-level="0.65"></div></div>
         </div>
       </div>
@@ -1476,7 +1475,7 @@
           <div class="skill-bar"><div class="skill-fill" data-level="0.78"></div></div>
         </div>
         <div class="skill-item">
-          <div class="skill-name"><span>V0.dev</span><span class="skill-level">PROFICIENT</span></div>
+          <div class="skill-name"><span>v0.dev</span><span class="skill-level">PROFICIENT</span></div>
           <div class="skill-bar"><div class="skill-fill" data-level="0.60"></div></div>
         </div>
         <div class="skill-item">
@@ -1497,11 +1496,11 @@
   <div class="section-label">CONTACT</div>
   <div class="contact-inner">
     <div class="contact-left reveal">
-      <h2>Let's start building<br><em>the next system.</em><br></h2>
+      <h2>Let's start building<br><em>the next_system.</em><br></h2>
       <p>We don't chat. We work. If you have a project that deserves precision and depth — reach out.</p>
       <div class="contact-links">
         <a href="mailto:mate8888@icloud.com" class="contact-link">
-          <span>E-MAIL</span>
+          <span>SEND_EMAIL</span>
           <span>→</span>
         </a>
         <a href="#" class="contact-link">
@@ -1509,7 +1508,7 @@
           <span>→</span>
         </a>
         <a href="#" class="contact-link">
-          <span>GITHUB / FIGMA</span>
+          <span>GITHUB</span>
           <span>→</span>
         </a>
         <a href="#" class="contact-link">
@@ -1526,7 +1525,7 @@
       </div>
       <div class="form-group">
         <label class="form-label">// Email</label>
-        <input type="email" class="form-input" placeholder="YOUR@EMAIL.COM">
+        <input type="email" class="form-input" placeholder="YOUR@EMAIL.XYZ">
       </div>
       <div class="form-group">
         <label class="form-label">// Project Brief</label>
@@ -1542,7 +1541,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-left">© 2077 — PORTFOLIO.SYS — ALL SYSTEMS OPERATIONAL</div>
-  <div class="footer-right">BUILT BY MATE.KOVACS</div>
+  <div class="footer-right">BUILT BY MATE KOVACS</div>
 </footer>
 
 <script>
