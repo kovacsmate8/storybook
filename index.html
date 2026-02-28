@@ -775,6 +775,93 @@
   }
 
   /* ═══════════════════════════════════════════════════════════
+     GALLERY CTA BUTTON
+  ═══════════════════════════════════════════════════════════ */
+  .gallery-cta {
+    margin-top: var(--sp-7);
+    display: flex;
+    justify-content: center;
+  }
+
+  .gallery-cta .reveal {
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .btn-gallery {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--sp-5) var(--sp-6);
+    background: var(--surface-1);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-base);
+    color: var(--text-primary);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: all 0.3s var(--ease-precision);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-gallery::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(242,238,0,0.03), transparent);
+    transition: left 0.5s var(--ease-precision);
+  }
+
+  .btn-gallery:hover::before {
+    left: 100%;
+  }
+
+  .btn-gallery:hover {
+    border-color: var(--accent-yellow);
+    background: var(--surface-2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(242,238,0,0.12);
+  }
+
+  .btn-gallery-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-1);
+  }
+
+  .btn-gallery-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+  }
+
+  .btn-gallery-title {
+    font-size: 16px;
+    color: var(--text-primary);
+    letter-spacing: 0.1em;
+  }
+
+  .btn-gallery-arrow {
+    font-size: 24px;
+    color: var(--text-muted);
+    transition: all 0.3s var(--ease-precision);
+  }
+
+  .btn-gallery:hover .btn-gallery-arrow {
+    color: var(--accent-yellow);
+    transform: translateX(8px);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
      SKILLS
   ═══════════════════════════════════════════════════════════ */
   #skills {
@@ -1132,6 +1219,20 @@
       grid-column: span 1;
     }
 
+    /* Gallery CTA mobil */
+    .btn-gallery {
+      padding: var(--sp-4);
+      font-size: 12px;
+    }
+
+    .btn-gallery-label {
+      font-size: 9px;
+    }
+
+    .btn-gallery-title {
+      font-size: 14px;
+    }
+
     /* Skills grid mobil */
     .skills-grid { grid-template-columns: 1fr; }
     
@@ -1411,8 +1512,21 @@
         <span class="card-arrow">↗</span>
       </div>
     </div>
-
   </div>
+
+  <!-- GALLERY CTA BUTTON -->
+  <div class="gallery-cta">
+    <div class="reveal">
+      <a href="gallery.html" class="btn-gallery">
+        <div class="btn-gallery-text">
+          <span class="btn-gallery-label">// VIEW ALL</span>
+          <span class="btn-gallery-title">COMPLETE ARCHIVE</span>
+        </div>
+        <span class="btn-gallery-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
 </section>
 
 <!-- SKILLS -->
