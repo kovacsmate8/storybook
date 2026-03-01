@@ -3,60 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GALLERY — MATE</title>
+<title>WORK ARCHIVE — MATE KOVACS</title>
+<meta name="description" content="Complete archive of enterprise UX projects. Fortune 500 experience, $2.4M+ impact delivered.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* ═══════════════════════════════════════════════════════════
-     TERMINAL.GLASS V2 — PRECISION BRUTALISM
-     "Precision is the only luxury."
-  ═══════════════════════════════════════════════════════════ */
-
   :root {
-    /* L1 — THE VOID */
     --void: #000000;
-
-    /* L2 — GLASS SURFACE */
     --surface-1: rgba(255,255,255,0.03);
     --surface-2: rgba(255,255,255,0.06);
     --surface-3: rgba(255,255,255,0.10);
-
-    /* L3 — CYBER ACCENTS (WCAG AA/AAA Compliant) */
-    --accent-yellow: #F2EE00;    /* 16.8:1 AAA */
-    --accent-cyan:   #00F0FF;    /* 13.2:1 AAA */
-    --accent-red:    #FF1A52;    /* 7.2:1 AA */
-
-    /* TEXT HIERARCHY */
+    --accent-yellow: #F2EE00;
+    --accent-cyan:   #00F0FF;
+    --accent-red:    #FF1A52;
     --text-primary:   rgba(255,255,255,0.92);
     --text-secondary: rgba(255,255,255,0.70);
     --text-muted:     rgba(255,255,255,0.50);
-
-    /* BORDERS */
     --border-base:   rgba(255,255,255,0.10);
     --border-hover:  rgba(255,255,255,0.20);
     --border-accent: rgba(242,238,0,0.35);
-
-    /* 8PX GRID SYSTEM */
     --sp-1: 4px;   --sp-2: 8px;   --sp-3: 16px;
     --sp-4: 24px;  --sp-5: 32px;  --sp-6: 48px;
     --sp-7: 64px;  --sp-8: 80px;  --sp-9: 128px;
-
-    /* EASING LIBRARY */
     --ease-elastic:   cubic-bezier(0.34, 1.56, 0.64, 1);
     --ease-precision: cubic-bezier(0.19, 1, 0.22, 1);
-
-    /* TYPOGRAPHY */
     --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
     --font-sans: system-ui, -apple-system, sans-serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
 
   body {
     background: var(--void);
-    /* CSS-Only Grain Texture */
     background-image: repeating-linear-gradient(
       0deg,
       transparent,
@@ -73,9 +52,6 @@
     padding-top: 56px;
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     ANIMÁLT RÁCS HÁTTÉR (ANIMATED GRID BACKGROUND)
-  ═══════════════════════════════════════════════════════════ */
   body::before {
     content: "";
     position: fixed;
@@ -99,7 +75,6 @@
     100% { transform: translateY(50px); }
   }
 
-  /* Scanlines Overlay */
   body::after {
     content: '';
     position: fixed;
@@ -115,9 +90,6 @@
     z-index: 9999;
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     CUSTOM CURSOR (90-DEGREE SQUARE)
-  ═══════════════════════════════════════════════════════════ */
   .cursor {
     position: fixed;
     width: 8px;
@@ -141,9 +113,6 @@
     transition: all 0.2s var(--ease-precision);
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     NAVIGATION — MOBIL FIX
-  ═══════════════════════════════════════════════════════════ */
   nav {
     position: fixed;
     top: 0;
@@ -232,9 +201,6 @@
     50% { opacity: 0.4; }
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     GALLERY SECTION
-  ═══════════════════════════════════════════════════════════ */
   #gallery {
     position: relative;
     z-index: 1;
@@ -266,9 +232,6 @@
     text-transform: uppercase;
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     GALLERY GRID — TR.AF INSPIRED
-  ═══════════════════════════════════════════════════════════ */
   .gallery-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -299,7 +262,6 @@
     transform: scale(1.05);
   }
 
-  /* Overlay Label */
   .gallery-label {
     position: absolute;
     bottom: 0;
@@ -323,9 +285,6 @@
     transform: translateY(0);
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     FOOTER
-  ═══════════════════════════════════════════════════════════ */
   footer {
     border-top: 1px solid var(--border-base);
     padding: var(--sp-5) var(--sp-7);
@@ -344,9 +303,6 @@
     color: var(--text-muted);
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     ANIMATIONS
-  ═══════════════════════════════════════════════════════════ */
   .reveal {
     opacity: 0;
     transform: translateY(32px);
@@ -358,45 +314,17 @@
     transform: translateY(0);
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     RESPONSIVE (MOBILE FIRST)
-  ═══════════════════════════════════════════════════════════ */
   @media (max-width: 768px) {
-    nav {
-      padding: 0 var(--sp-4);
-    }
-
-    .nav-links {
-      display: none;
-    }
-
-    #gallery {
-      padding: var(--sp-7) var(--sp-4);
-    }
-
-    .gallery-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .gallery-label {
-      font-size: 10px;
-      padding: var(--sp-3);
-    }
-
-    footer {
-      padding: var(--sp-5) var(--sp-4);
-      flex-direction: column;
-      gap: var(--sp-2);
-      text-align: center;
-    }
+    nav { padding: 0 var(--sp-4); }
+    .nav-links { display: none; }
+    #gallery { padding: var(--sp-7) var(--sp-4); }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .gallery-label { font-size: 10px; padding: var(--sp-3); }
+    footer { padding: var(--sp-5) var(--sp-4); flex-direction: column; gap: var(--sp-2); text-align: center; }
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     ACCESSIBILITY
-  ═══════════════════════════════════════════════════════════ */
   @media (prefers-reduced-motion: reduce) {
-    *,
-    body::before {
+    *, body::before {
       animation-duration: 0.01ms !important;
       transition-duration: 0.01ms !important;
     }
@@ -408,9 +336,8 @@
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursor-ring"></div>
 
-<!-- NAVIGATION -->
 <nav>
-  <a href="index.html" class="nav-logo">PORTFOLIO.SYS</a>
+  <a href="index.html" class="nav-logo">MATE KOVACS</a>
   <ul class="nav-links">
     <li><a href="index.html#about">About</a></li>
     <li><a href="index.html#projects">Work</a></li>
@@ -419,78 +346,87 @@
   </ul>
   <div class="nav-status">
     <span class="status-dot"></span>
-    AVAILABLE FOR WORK
+    AVAILABLE FOR PROJECTS
   </div>
 </nav>
 
-<!-- GALLERY SECTION -->
 <section id="gallery">
   <div class="gallery-header reveal">
     <h1>WORK<br>ARCHIVE.</h1>
-    <p>Selected Projects — Visual Index</p>
+    <p>Complete Project Visual Index — Enterprise UX Systems</p>
   </div>
 
   <div class="gallery-grid">
-    <!-- Archive 01 -->
+    
     <div class="gallery-item reveal">
-      <img src="https://images.unsplash.com/photo-1737629918402-b6fe238e9f0b?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Modern Architecture">
-      <div class="gallery-label">// ARCHIVE_01</div>
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&q=90" alt="Analytics Dashboard">
+      <div class="gallery-label">// ARCHIVE_01 — Analytics Command Center</div>
     </div>
 
-    <!-- Archive 02 -->
     <div class="gallery-item reveal">
-      <img src="https://images.unsplash.com/photo-1737629918399-45526c4f9264?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Workspace Design">
-      <div class="gallery-label">// ARCHIVE_02</div>
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&q=90" alt="Financial Platform">
+      <div class="gallery-label">// ARCHIVE_02 — VAULT Financial OS</div>
     </div>
 
-    <!-- Archive 03 -->
     <div class="gallery-item reveal">
-      <img src="https://images.unsplash.com/photo-1694630097817-c3a8e1e4029f?q=80&w=1336&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Urban Architecture">
-      <div class="gallery-label">// ARCHIVE_03</div>
+      <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=1600&q=90" alt="Component Library">
+      <div class="gallery-label">// ARCHIVE_03 — GRID/CORE Design System</div>
     </div>
 
-    <!-- Archive 04 -->
     <div class="gallery-item reveal">
-      <img src="https://images.unsplash.com/photo-1634118931958-f1cf1f9c6156?q=80&w=1335&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Data Analytics">
-      <div class="gallery-label">// ARCHIVE_04</div>
+      <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=1600&q=90" alt="Enterprise Platform">
+      <div class="gallery-label">// ARCHIVE_04 — NEXUS B2B Platform</div>
     </div>
 
-    <!-- Archive 05 -->
     <div class="gallery-item reveal">
-      <img src="https://images.unsplash.com/photo-1610290366770-6ae944a9d280?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Technology Workspace">
-      <div class="gallery-label">// ARCHIVE_05</div>
+      <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1600&q=90" alt="E-commerce Checkout">
+      <div class="gallery-label">// ARCHIVE_05 — MONO Checkout Flow</div>
     </div>
 
-    <!-- Archive 06 -->
     <div class="gallery-item reveal">
-      <img src="https://images.unsplash.com/photo-1692477729539-881615b4109d?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Creative Studio">
-      <div class="gallery-label">// ARCHIVE_06</div>
+      <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&q=90" alt="Healthcare Portal">
+      <div class="gallery-label">// ARCHIVE_06 — MEDIX Patient Portal</div>
     </div>
 
-    <!-- Archive 07 -->
     <div class="gallery-item reveal">
-      <img src="https://images.unsplash.com/photo-1653162032089-706c9262c4b3?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Modern Office">
-      <div class="gallery-label">// ARCHIVE_07</div>
+      <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=90" alt="Modern Architecture">
+      <div class="gallery-label">// ARCHIVE_07 — Enterprise Data Platform</div>
     </div>
 
-    <!-- Archive 08 -->
     <div class="gallery-item reveal">
-      <img src="https://images.unsplash.com/photo-1687762226660-61683df67267?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Contemporary Space">
-      <div class="gallery-label">// ARCHIVE_08</div>
+      <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1600&q=90" alt="Workspace Design">
+      <div class="gallery-label">// ARCHIVE_08 — Collaboration Suite</div>
     </div>
+
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=90" alt="Urban Architecture">
+      <div class="gallery-label">// ARCHIVE_09 — CRM Dashboard</div>
+    </div>
+
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1600&q=90" alt="Technology Workspace">
+      <div class="gallery-label">// ARCHIVE_10 — Developer Tools UI</div>
+    </div>
+
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=1600&q=90" alt="Creative Studio">
+      <div class="gallery-label">// ARCHIVE_11 — Brand Identity System</div>
+    </div>
+
+    <div class="gallery-item reveal">
+      <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=1600&q=90" alt="Modern Office">
+      <div class="gallery-label">// ARCHIVE_12 — Admin Console</div>
+    </div>
+
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="footer-left">© 2077 — PORTFOLIO.SYS — ALL SYSTEMS OPERATIONAL</div>
-  <div class="footer-right">BUILT BY MATE KOVACS</div>
+  <div class="footer-left">© 2025 — MATE KOVACS — ENTERPRISE UX SYSTEMS</div>
+  <div class="footer-right">STARTING FROM $5K</div>
 </footer>
 
 <script>
-  // ═══════════════════════════════════════════════════════════
-  // CUSTOM CURSOR (90-DEGREE SQUARE)
-  // ═══════════════════════════════════════════════════════════
   const cursor = document.getElementById('cursor');
   const ring   = document.getElementById('cursor-ring');
   let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
@@ -511,8 +447,7 @@
   }
   animateRing();
 
-  // Cursor hover effects
-  document.querySelectorAll('a, button, .gallery-item').forEach(el => {
+  document.querySelectorAll('a, .gallery-item').forEach(el => {
     el.addEventListener('mouseenter', () => {
       ring.style.width  = '56px';
       ring.style.height = '56px';
@@ -525,9 +460,6 @@
     });
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // SCROLL REVEAL (Intersection Observer)
-  // ═══════════════════════════════════════════════════════════
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -542,9 +474,6 @@
 
   reveals.forEach(el => observer.observe(el));
 
-  // ═══════════════════════════════════════════════════════════
-  // MOBILE: Disable custom cursor on touch devices
-  // ═══════════════════════════════════════════════════════════
   if ('ontouchstart' in window) {
     cursor.style.display = 'none';
     ring.style.display   = 'none';
